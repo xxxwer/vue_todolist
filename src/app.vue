@@ -6,7 +6,7 @@
 export default {
     data() {
         return {
-            text : 'vue todolist'
+            text : 'vue todolist test aaa'
         }
     }
 }

@@ -1,6 +1,10 @@
 const path = require('path')
+const HTMLPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+const isDev = process.env.NODE_ENV === 'dev'
 
-module.exports = {
+const config = {
+  target: 'web',
   // 打包开始的入口文件
   entry: path.join(__dirname, 'src/index.js'),
   // 打包完成后 输出的文件 和 目录
@@ -45,5 +49,32 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: isDev ? '"dev"' : '"production"'
+      }
+    }),
+    new HTMLPlugin()
+  ]
 }
+
+if (isDev) {
+  config.devtool = '#cheap-module-eval-source-map'
+  config.devServer = {
+    port: 8100,
+    host: '0.0.0.0',
+    overlay: {
+      errors: true
+    },
+    hot: true
+  }
+  config.plugins.push(
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
+  )
+}
+
+module.exports = config
