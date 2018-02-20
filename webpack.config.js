@@ -20,6 +20,11 @@ const config = {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
+      // webpack 加载 打包 .jsx 的文件
+      {
+        test: /\.jsx$/,
+        loader: 'babel-loader'
+      },
       // webpack 加载 打包 .css 的文件
       {
         test: /\.css$/,
@@ -45,6 +50,12 @@ const config = {
         use: [
           'style-loader',
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
           'stylus-loader'
         ]
       }
