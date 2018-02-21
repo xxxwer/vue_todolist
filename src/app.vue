@@ -1,19 +1,43 @@
 <template>
-    <div id="t1">{{text}}</div>
+    <div id="app">
+        <div id="cover"></div>
+        <Header></Header>
+        <Todo></Todo>
+        <Footer></Footer>
+    </div>
 </template>
 
 <script>
+import Header from './todo/header.vue'
+import Footer from './todo/footer.jsx'
+import Todo from './todo/todo.vue'
+
 export default {
-    data() {
-        return {
-            text : 'vue todolist'
-        }
+    components: {
+        Header,
+        Footer,
+        Todo,
     }
 }
 </script>
 
-<style>
-#t1{
-    color: blue;
+<!-- 指定使用 stylus 预处理器， scoped 只对该 component 生效 -->
+<style lang="stylus" scoped>
+#app{
+    position absolute
+    left 0
+    right 0
+    top 0
+    bottom 0
+}
+#cover{
+    position absolute
+    left 0
+    right 0
+    top 0
+    bottom 0
+    background-color #999
+    opacity .9
+    z-index -1
 }
 </style>
