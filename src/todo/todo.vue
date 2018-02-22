@@ -30,9 +30,17 @@ import Tabs from './tabs.vue'
 export default {
     data() {
         return {
-            todos: [],
-            filter: 'all'
+            todos: JSON.parse(localStorage.getItem('todoItems')) || [],
+            filter: 'all',
         }
+    },
+    watch: {
+        todos: {
+            handler: function (val, oldVal) {
+                localStorage.setItem('todoItems', JSON.stringify(this.todos))
+            },
+            deep: true
+        },
     },
     components: {
         Item,
@@ -45,7 +53,7 @@ export default {
             }
             let completed = this.filter === 'completed'
             return this.todos.filter(todo => todo.completed === completed)
-        }
+        },
     },
     methods: {
         addTodo(e) {
@@ -68,7 +76,7 @@ export default {
         },
         clickAllCompleted(){
             this.todos = this.todos.filter(todo => !todo.completed)
-        }
+        },
     }
 }
 </script>

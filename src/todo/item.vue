@@ -22,7 +22,7 @@ export default {
         deletetodo() {
             // 触发事件
             this.$emit('delItem', this.todo.id)
-        }
+        },
     }
 }
 </script>

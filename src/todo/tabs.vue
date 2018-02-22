@@ -25,7 +25,7 @@ export default {
         todos: {
             type: Array,
             required: true,
-        }
+        },
     },
     data() {
         return {
