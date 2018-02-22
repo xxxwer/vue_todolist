@@ -2,6 +2,7 @@ const path = require('path')
 const HTMLPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const isDev = process.env.NODE_ENV === 'dev'
+const ExtractPlugin = require('extract-text-webpack-plugin')
 
 const config = {
   target: 'web',
@@ -44,21 +45,6 @@ const config = {
           }
         }
       },
-      // 使用 stylus 语言写css， http://stylus-lang.com/try.html#
-      {
-        test: /\.styl$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          'stylus-loader'
-        ]
-      }
     ]
   },
 
@@ -85,6 +71,57 @@ if (isDev) {
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
+  )
+  config.module.rules.push(
+    // 使用 stylus 语言写css， http://stylus-lang.com/try.html#
+    {
+      test: /\.styl$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true
+          }
+        },
+        'stylus-loader'
+      ]
+    }
+  )
+} else {
+  config.entry = {
+    app: path.join(__dirname, 'src/index.js'),
+    vendor: ['vue'],
+  }
+  config.output.filename = '[name].[chunkhash:8].js'
+  config.module.rules.push(
+    // 使用 stylus 语言写css， http://stylus-lang.com/try.html#
+    {
+      test: /\.styl$/,
+      use: ExtractPlugin.extract({
+        fallback: 'style-loader',
+        use: [
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          'stylus-loader'
+        ]
+      })
+    }
+  )
+  config.plugins.push(
+    new ExtractPlugin('styles.[contentHash:8].css'),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'runtime'
+    })
   )
 }
 

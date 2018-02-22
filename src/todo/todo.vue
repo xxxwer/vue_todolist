@@ -57,9 +57,13 @@ export default {
     },
     methods: {
         addTodo(e) {
+            let content = e.target.value.trim()
+            if (content === '') {
+                return
+            }
             let todo = {
                 id: (new Date()).getTime(),
-                content: e.target.value.trim(),
+                content: content,
                 completed: false
             }
             this.todos.unshift(todo)
@@ -75,7 +79,10 @@ export default {
             this.filter = state
         },
         clickAllCompleted(){
-            this.todos = this.todos.filter(todo => !todo.completed)
+            let result = confirm('确定清空已完成吗？')
+            if(result) {
+                this.todos = this.todos.filter(todo => !todo.completed)
+            }
         },
     }
 }
